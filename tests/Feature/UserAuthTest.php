@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use Illuminate\Support\Facades\Auth;
 use JsonException;
 use Tests\TestCase;
 
@@ -38,11 +39,11 @@ class UserAuthTest extends TestCase
 
         $response->assertSessionHasNoErrors();
         $this->assertAuthenticated();
-        //Todo: assert redirect to main panel
+        $response->assertRedirectToRoute('user.panel');
     }
 
     /**
-     * A feature login page test.
+     * A feature register page test.
      */
     public function test_register_page(): void
     {
@@ -52,7 +53,7 @@ class UserAuthTest extends TestCase
     }
 
     /**
-     * A feature login page test.
+     * A feature register request test.
      * @throws JsonException
      */
     public function test_register_request(): void
@@ -86,29 +87,17 @@ class UserAuthTest extends TestCase
         $this->assertDatabaseHas('users', [
             'email' => 'test.test@chatapp.com',
         ]);
+        $response->assertRedirectToRoute('login.form');
     }
 
     /**
-     * A feature login page test.
-     * @throws JsonException
+     * A feature logout request test.
      */
     public function test_logout_request(): void
     {
-        $response = $this->post(route('login'), [
-            'email' => 'kamil.langer@chatapp.com',
-            'password' => 'paSs420'
-        ]);
-
-        $response->assertSessionHasErrors(['email']);
+        Auth::loginUsingId(1);
+        $response = $this->post(route('logout'));
+        $response->assertRedirectToRoute('login.form');
         $this->assertGuest();
-
-        $response = $this->post(route('login'), [
-            'email' => 'kamil.langer@chatapp.com',
-            'password' => 'paSs420!'
-        ]);
-
-        $response->assertSessionHasNoErrors();
-        $this->assertAuthenticated();
-        //Todo: assert redirect to main panel
     }
 }

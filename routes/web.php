@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\PanelController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,17 +15,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('auth.login');
-})->name('login.form');
-Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::get('/', function () {return view('auth.login');})->name('login.form');
 Route::middleware('guest')->group(function (){
     //Auth
-//    Route::post('/login', [AuthController::class, 'login'])->name('login');
+    Route::post('/login', [AuthController::class, 'login'])->name('login');
     Route::get('/register', [AuthController::class, 'register'])->name('register.form');
     Route::post('/register', [AuthController::class, 'store'])->name('register');
 });
 Route::middleware('auth')->group(function (){
     //Auth
-    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    //User panels
+    Route::get('/panel', [PanelController::class, 'mainPanel'])->name('user.panel');
 });
