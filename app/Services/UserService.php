@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class UserService
 {
@@ -30,6 +31,7 @@ class UserService
         try {
             $user = User::create($validated);
         } catch (Exception $exception) {
+            Log::debug($exception->getMessage());
             DB::rollBack();
         }
         DB::commit();

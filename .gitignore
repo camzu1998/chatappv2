@@ -21,3 +21,5 @@ composer.lock
 package-lock.json
 chatapp.loc.crt
 chatapp.loc.key
+public/vendor
+storage/debugbar
