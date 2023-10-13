@@ -8,6 +8,8 @@
             <div class="card-header">{{ __('Logowanie') }}</div>
             <div class="card-body">
                 <form action="{{ route('login') }}" method="POST">
+                    @csrf
+
                     <div class="mb-3">
                         <label for="email" class="form-label">{{ __('Adres Email') }}</label>
                         <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp">
